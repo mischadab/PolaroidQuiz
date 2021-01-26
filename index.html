@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polaroid Quiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Polaroid Quiz</h1>
+        <h4>Test your Polaroid knowledge</h4>
+        <div class="alert alert-light">
+          <button id="startBtn" onClick="startQuiz(event)" class="float-end">Start Quiz</button>
+          <h3>Timer:
+             <div id="timerEl">
+                <p id="clockTick"></p>
+             </div> </h3>
+        </div>
+        <div id='quizPage' class="card">
+          <form id="questionBox" class="card-body">
+          </form>
+          <div id='answerResponse' class="card-footer alert-secondary">
+            Choose the correct answer
+          </div>
+        </div>
+        <div id='finalScore' class="card d-none">
+          Final Score
+        </div>
+      </div>
+
+<script>
+
+    var time = 80;
+    var TimerEl = document.getElementById('time');
+    var timerId;
+    var questionNum;
+
+    var questions = [
+        { question: "Who started the company Polaroid?",
+        answers: [ "George Eastman", "Ersnt Leitz", "Edwin Land" ],
+        correct: "Edwin Land" },
+        
+        { question: "What was Edwin Land's first invention?",
+        answers: [ "The Polaroid Camera", "Night Vision Goggles", "The Polarizer" ],
+        correct: "The Polarizer" },
+        
+        { question: "Edwin Land's dream was to create:",
+        answers: [ "The ultimate camera", "True one-step photography", "Simple photography that is easy accessible" ],
+        correct: "True one-step photography" },
+    
+        { question: "The SX-70 was Edwin Land's first camera goal, although he released different cameras before it.. How long did it take to invent the SX-70?",
+        answers: [ "50 years", "29 years", "14 years" ],
+        correct: "29 years" },
+        
+        { question: "Edwin Land was on many projects in his lifetime. He is the reason why:",
+        answers: [ "The first NASA telescope went into space", "Cars have turbochargers", "Tea comes in bags" ],
+        correct: "The first NASA telescope went into space" },
+    ]
+
+    function startQuiz(event) {
+        event.preventDefault();
+        questionNum = 0
+        document.querySelector('#startQuiz')
+        timerId = setInterval(clockTick, 1000);
+        startBtn.style.display='none'
+        showQuestion();
+    }
+    
+    function showQuestion() {
+        var question = questions[questionNum]
+        var questionEl = document.querySelector('#questionBox')
+        questionEl.innerHTML = `
+            <div class="alert alert-warning"><h3>${question.question}</h3>
+             `
+        for( var i=0; i < question.answers.length; i++ ){
+            var answer = question.answers[i]
+            questionEl.innerHTML += `
+            <button onClick="selectAnswer(event,'${answer}')" class="btn btn-secondary btn-block">${answer}</button>
+            `
+        }
+    }
+
+    function selectAnswer( event,answer ){
+        event.preventDefault()
+        if( answer===questions[questionNum].correct ){
+        console.log( `Yay you got it!` )
+        } else {
+        console.log( `WRONG -10 seconds` )
+        timerDecrease(10)
+        }
+        questionNum++
+        if( questionNum<questions.length )
+        showQuestion()
+        else
+        endQuiz()
+    }
+
+    function clockTick() {
+        time--;
+        timerEl.textContent = time;
+        if (time <= 0) {
+            endQuiz();
+        }
+    }
+
+    function timerDecrease( byValue=10 ){
+        timerEl -= byValue
+        document.querySelector('timerEl').textContent = timerEl
+     }
+
+     function showPage ( page ) {
+        document.querySelector('#finalScore').classList.add('d-none')
+     }
+
+    function endQuiz() {
+        if( event )event.preventDefault();
+        console.log( `Quiz complete` );
+        clearInterval(timerId);
+        document.getElementById('startBtn').style.display ='inline'; 
+        showPage();
+    }
+
+
+
+
+</script>
+</body>
+
+</html>
