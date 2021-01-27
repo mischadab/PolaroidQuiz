@@ -1,4 +1,4 @@
-var time = 80;
+var time = 60;
 var TimerEl = document.getElementById('time');
 var timerId;
 var questionNum;
@@ -81,7 +81,7 @@ function endQuiz() {
   clearInterval(timerId);
   document.getElementById('startBtn').style.display = 'inline';
   document.querySelector('#questionBox').innerHTML = "";
-  timerEl.textContent = ""; time = 80;
+  timerEl.textContent = ""; time = 60;
   document.getElementById('finalScoreEl').textContent = 'Final Score ' + finalScore + "/5";
   document.getElementById('finalScoreEl').classList.remove('d-none');
   document.getElementById('completeForm').classList.remove('d-none');
