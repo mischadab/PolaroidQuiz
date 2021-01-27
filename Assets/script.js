@@ -58,7 +58,7 @@ function selectAnswer(event, answer) {
             finalScore++ 
          } else {
             console.log(`WRONG -10 seconds`)
-    time-=10
+            time-=10
     }
     questionNum++
         if (questionNum < questions.length)
@@ -93,11 +93,25 @@ function enterInfo(){
     var names = document.querySelector('#enteredInfo').value
     var storage = localStorage.setItem("infos", JSON.stringify(names));
     console.log(names + finalScore);
+    document.getElementById('completeForm').classList.add('d-none');
     renderInfo();
 }
 
 function renderInfo(){
     var personInfo = JSON.parse(localStorage.getItem("infos"));
-    document.querySelector('#score').textContent += `${personInfo}  ${finalScore}`
-    
+    document.querySelector('#score').textContent += `${personInfo}  ${finalScore}` 
+    var highscores = JSON.parse(window.localStorage.getItem("score")) || [];
+  // sort highscores by score property in descending order
+  highscores.sort(function(a, b) {
+    return b.score - a.score;
+  });
+  highscores.forEach(function(score) {
+    // create li tag for each high score
+    var liTag = document.createElement("li");
+    liTag.textContent = score.personInfo + " - " + score.score;
+    // display on page
+    var olEl = document.getElementById("score");
+    olEl.appendChild(liTag);
+  });
 }
+
